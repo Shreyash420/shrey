@@ -1,0 +1,31 @@
+
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+)
+data = [
+    [70, 70, 0],
+    [70, 40, 1],
+    [30, 40, 0],
+    [10, 40, 0]
+]
+
+X = np.array([row[:2] for row in data])  # Interview Score and Exam Rank
+y = np.array([row[2] for row in data])  # Type
+
+
+new_candidate = np.array([[30, 70]])  # Interview Score = 30, Exam Rank = 70
+
+
+k = 3
+knn = KNeighborsClassifier(n_neighbors=k, metric='euclidean')
+
+
+knn.fit(X, y)
+
+
+prediction = knn.predict(new_candidate)
+
+if prediction[0] == 1:
+    print("The new candidate with Interview Score 30 and Exam Rank 70 will be Hired.")
+else:
+    print("The new candidate with Interview Score 30 and Exam Rank 70 will Not be Hired.")
