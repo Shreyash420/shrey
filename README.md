@@ -3,8 +3,6 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier, export_text, plot_tree
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
-
-# Step 1: Define the dataset
 data = {
     "Outlook": ["Rainy", "Rainy", "Overcast", "Sunny", "Sunny", "Sunny", "Overcast", "Rainy", "Rainy", "Sunny", "Rainy", "Overcast", "Overcast", "Sunny"],
     "Temperature": ["Hot", "Hot", "Hot", "Mild", "Cool", "Cool", "Cool", "Mild", "Cool", "Mild", "Mild", "Mild", "Hot", "Mild"],
@@ -15,7 +13,7 @@ data = {
 
 df = pd.DataFrame(data)
 
-# Step 2: Convert categorical variables to numerical
+
 categorical_columns = ["Outlook", "Temperature", "Humidity", "Windy"]
 for column in categorical_columns:
     df[column] = df[column].astype('category').cat.codes
@@ -23,26 +21,26 @@ for column in categorical_columns:
 X = df.drop("PlayGolf", axis=1)
 y = df["PlayGolf"].astype('category').cat.codes
 
-# Step 3: Build the decision tree classifier
+
 clf = DecisionTreeClassifier(criterion="entropy", random_state=0)
 clf.fit(X, y)
 
-# Step 4: Visualize the decision tree
+
 plt.figure(figsize=(12, 8))
 plot_tree(clf, feature_names=X.columns, class_names=["No", "Yes"], filled=True)
 plt.show()
 
-# Step 5: Calculate information gain (entropy)
+
 def calculate_entropy(y):
     classes, counts = np.unique(y, return_counts=True)
     probabilities = counts / len(y)
     entropy = -np.sum(probabilities * np.log2(probabilities))
     return entropy
 
-# Compute entropy for the whole dataset
+
 initial_entropy = calculate_entropy(y)
 
-# Compute entropy after splitting on each feature
+
 def calculate_information_gain(df, feature, target):
     total_entropy = calculate_entropy(df[target])
     
@@ -57,14 +55,11 @@ def calculate_information_gain(df, feature, target):
     information_gain = total_entropy - weighted_entropy
     return information_gain
 
-# Display information gain for each feature
 for feature in X.columns:
     ig = calculate_information_gain(df, feature, "PlayGolf")
     print(f"Information Gain for {feature}: {ig:.4f}")
 
-# Step 6: Evaluate the model
 predictions = clf.predict(X)
 accuracy = accuracy_score(y, predictions)
 print(f"Accuracy of the Decision Tree: {accuracy:.2f}")
-# shrey
-coder
+
